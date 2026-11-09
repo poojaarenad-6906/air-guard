@@ -1,48 +1,58 @@
-/* Pollution Insights */
+/* ============================================================
+   AI AirGuard — Pollution Insights
+   ============================================================ */
+
+/* ── Section sub-heading ─────────────────────────────────── */
 .insights-sub {
   font-size: 1.1rem;
   margin: 36px 0 16px;
   color: #90CAF9;
 }
 
-/* AQI scale row */
+/* ── AQI scale row ───────────────────────────────────────── */
 .aqi-scale-row {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
 }
+
 .aqi-scale-card {
   flex: 1;
   min-width: 150px;
-  padding: 20px 16px;
+  padding: 22px 16px;
   text-align: center;
+  transition: transform 0.25s ease, border-color 0.25s ease;
 }
+.aqi-scale-card:hover {
+  transform: translateY(-4px);
+}
+
 .aqs-level {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 900;
   line-height: 1;
 }
 .aqs-label {
   font-size: 0.85rem;
   font-weight: 700;
-  margin: 4px 0 8px;
+  margin: 6px 0 8px;
   letter-spacing: 0.03em;
 }
 .aqs-desc {
   font-size: 0.78rem;
   color: #8BA8C4;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
-/* Pollutant info cards */
+/* ── Pollutant info cards ────────────────────────────────── */
 .pollutants-info-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 18px;
 }
-.pollutant-info-card {
-  padding: 22px 20px;
-}
+
+.pollutant-info-card { padding: 22px 20px; }
+
 .pi-header {
   display: flex;
   align-items: center;
@@ -50,41 +60,51 @@
   margin-bottom: 12px;
   flex-wrap: wrap;
 }
-.pi-icon { font-size: 1.8rem; flex-shrink: 0; }
-.pi-symbol { font-size: 1.1rem; font-weight: 800; color: #90CAF9; }
-.pi-name { font-size: 0.78rem; color: #8BA8C4; }
-.pi-who { margin-left: auto; text-align: right; }
-.pi-desc { font-size: 0.85rem; color: #C9DFF0; line-height: 1.55; margin-bottom: 12px; }
+.pi-icon    { font-size: 1.8rem; flex-shrink: 0; line-height: 1; }
+.pi-symbol  { font-size: 1.1rem; font-weight: 800; color: #90CAF9; }
+.pi-name    { font-size: 0.78rem; color: #8BA8C4; }
+.pi-who     { margin-left: auto; text-align: right; }
+.pi-desc    { font-size: 0.85rem; color: #D5E5F0; line-height: 1.6; margin-bottom: 12px; }
 
+/* Source tags */
 .pi-sources {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
 }
-.pi-sources-label { font-size: 0.75rem; color: #8BA8C4; margin-right: 4px; }
+.pi-sources-label {
+  font-size: 0.75rem;
+  color: #8BA8C4;
+  margin-right: 4px;
+}
 .pi-source-tag {
   padding: 2px 10px;
   border-radius: 20px;
   font-size: 0.72rem;
-  background: rgba(141,216,255,0.08);
-  border: 1px solid rgba(141,216,255,0.18);
+  background: rgba(141, 216, 255, 0.08);
+  border: 1px solid rgba(141, 216, 255, 0.18);
   color: #8DD8FF;
 }
 
-/* Reduction tips */
+/* ── Reduction tips ──────────────────────────────────────── */
 .reduction-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
 }
-.reduction-card {
-  padding: 20px 16px;
-  text-align: center;
-}
-.reduction-icon { font-size: 2rem; display: block; margin-bottom: 10px; }
-.reduction-card p { font-size: 0.83rem; color: #8BA8C4; line-height: 1.5; }
 
+.reduction-card {
+  padding: 22px 16px;
+  text-align: center;
+  transition: transform 0.25s ease;
+}
+.reduction-card:hover { transform: translateY(-4px); }
+.reduction-icon { font-size: 2rem; display: block; margin-bottom: 10px; line-height: 1; }
+.reduction-card h3 { font-size: 0.88rem; margin-bottom: 6px; }
+.reduction-card p  { font-size: 0.83rem; color: #8BA8C4; line-height: 1.5; }
+
+/* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 1024px) {
   .reduction-grid { grid-template-columns: repeat(2, 1fr); }
 }

@@ -8,6 +8,7 @@ import SmartAlerts from './components/SmartAlerts';
 import AqiCharts from './components/AqiCharts';
 import AIAssistant from './components/AIAssistant';
 import PollutionInsights from './components/PollutionInsights';
+import LLMDashboard from './components/LLMDashboard';
 import { fetchAirQuality } from './services/airQualityService';
 import './styles/global.css';
 
@@ -40,6 +41,8 @@ export default function App() {
   const [loading, setLoading]     = useState(false);
   const [loadingCity, setLoadingCity] = useState('');
   const [error, setError]         = useState('');
+  // Session search history — up to 5 most recent unique cities
+  const [searchHistory, setSearchHistory] = useState([]);
 
   const handleSearch = useCallback(async (cityName) => {
     setLoading(true);
@@ -48,6 +51,13 @@ export default function App() {
     try {
       const data = await fetchAirQuality(cityName);
       setAirData(data);
+      // Add to history (newest first, deduplicate by city name)
+      setSearchHistory((prev) => {
+        const filtered = prev.filter(
+          (h) => h.city.toLowerCase() !== data.city.toLowerCase()
+        );
+        return [{ city: data.city, aqi: data.aqi, aqiLabel: data.aqiLabel }, ...filtered].slice(0, 5);
+      });
       setActiveSection('dashboard');
     } catch (err) {
       setError(err.message || 'Failed to fetch air quality data. Please try again.');
@@ -82,7 +92,7 @@ export default function App() {
       {loading && <LoadingOverlay city={loadingCity} />}
 
       <div style={{ position: 'relative', zIndex: 1 }}>
-        <Navbar activeSection={activeSection} onNavigate={handleNavigate} />
+        <Navbar activeSection={activeSection} onNavigate={handleNavigate} hasData={!!airData} />
 
         {/* Global error banner */}
         {error && !loading && (
@@ -116,7 +126,13 @@ export default function App() {
 
         {activeSection === 'dashboard' && airData && (
           <>
-            <Dashboard data={airData} onNewSearch={handleNewSearch} />
+            <Dashboard
+              data={airData}
+              onNewSearch={handleNewSearch}
+              onViewCharts={() => handleNavigate('charts')}
+              searchHistory={searchHistory}
+              onHistorySearch={handleSearch}
+            />
             <HealthRecommendations data={airData} />
             <SmartAlerts data={airData} />
           </>
@@ -138,6 +154,10 @@ export default function App() {
           <div style={{ paddingTop: 100 }}>
             <PollutionInsights />
           </div>
+        )}
+
+        {activeSection === 'llmdashboard' && (
+          <LLMDashboard />
         )}
 
         {/* Footer */}

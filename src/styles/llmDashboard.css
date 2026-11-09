@@ -1,0 +1,178 @@
+/* ── LLM Dashboard ─────────────────────────────────────────────── */
+.llm-dashboard { padding-top: 100px; padding-bottom: 60px; }
+
+/* ── Demo data banner ────────────────────────────────────────────── */
+.llm-demo-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  border-color: rgba(141,216,255,0.28);
+  background: rgba(141,216,255,0.05);
+}
+.demo-banner-icon {
+  font-size: 1.4rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ── Metric card ─────────────────────────────────────────────────── */
+.metric-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  backdrop-filter: blur(16px);
+  padding: 20px 18px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.metric-card:hover {
+  border-color: var(--card-border-hover);
+  box-shadow: 0 0 18px rgba(141,216,255,0.1);
+}
+.metric-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.metric-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--heading);
+}
+.metric-value.good   { color: #4CAF50; }
+.metric-value.warn   { color: #FFC107; }
+.metric-value.danger { color: #FF5722; }
+.metric-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.metric-bar {
+  height: 4px;
+  background: rgba(141,216,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+.metric-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+/* ── Category section ────────────────────────────────────────────── */
+.dash-category {
+  margin-bottom: 40px;
+}
+.dash-category-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(141,216,255,0.12);
+}
+.dash-category-icon { font-size: 1.5rem; }
+.dash-category-title { font-size: 1.05rem; font-weight: 700; color: var(--heading); }
+.dash-category-desc  { font-size: 0.78rem; color: var(--text-muted); margin-left: auto; }
+
+/* ── Metrics grids ───────────────────────────────────────────────── */
+.metrics-grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.metrics-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.metrics-grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+
+/* ── Chart card ──────────────────────────────────────────────────── */
+.dash-chart-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  backdrop-filter: blur(16px);
+  padding: 22px 18px;
+  margin-top: 16px;
+}
+.dash-chart-card h4 {
+  font-size: 0.88rem;
+  color: var(--heading);
+  margin-bottom: 4px;
+}
+.dash-chart-card p { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 16px; }
+
+/* ── Summary banner ──────────────────────────────────────────────── */
+.dash-summary-row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin-bottom: 40px;
+}
+.summary-stat {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 18px 16px;
+  text-align: center;
+  backdrop-filter: blur(16px);
+}
+.summary-stat-value { font-size: 2rem; font-weight: 900; color: var(--accent); line-height: 1; }
+.summary-stat-label { font-size: 0.72rem; color: var(--text-muted); margin-top: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* ── Per-agent table ──────────────────────────────────────────────── */
+.agent-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 14px; }
+.agent-table th {
+  text-align: left; padding: 8px 12px; font-size: 0.72rem;
+  text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--text-muted); border-bottom: 1px solid rgba(141,216,255,0.12);
+}
+.agent-table td { padding: 10px 12px; border-bottom: 1px solid rgba(141,216,255,0.07); color: var(--text-primary); }
+.agent-table tr:last-child td { border-bottom: none; }
+.agent-table tr:hover td { background: rgba(141,216,255,0.03); }
+
+/* ── Empty/no-data state ─────────────────────────────────────────── */
+.dash-no-data {
+  text-align: center; padding: 40px 24px;
+  color: var(--text-muted); font-size: 0.88rem; line-height: 1.7;
+}
+.dash-no-data .no-data-icon { font-size: 3rem; display: block; margin-bottom: 16px; }
+.dash-no-data strong { color: var(--heading); }
+
+/* ── Refresh controls ────────────────────────────────────────────── */
+.dash-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.dash-last-updated { font-size: 0.75rem; color: var(--text-muted); margin-left: auto; }
+.dash-live-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: #4CAF50;
+  animation: pulseDot 1.6s ease-in-out infinite; flex-shrink: 0;
+}
+
+/* ── Recent interactions table ───────────────────────────────────── */
+.interactions-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+.interactions-table th {
+  padding: 8px 10px; text-align: left; font-size: 0.7rem; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--text-muted); border-bottom: 1px solid rgba(141,216,255,0.12);
+}
+.interactions-table td { padding: 9px 10px; border-bottom: 1px solid rgba(141,216,255,0.07); color: var(--text-primary); }
+.interactions-table .q-cell { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.interactions-table .r-cell { max-width: 260px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-muted); }
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 1100px) {
+  .metrics-grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .dash-summary-row { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+  .metrics-grid-3, .metrics-grid-2 { grid-template-columns: 1fr; }
+  .dash-summary-row { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+  .metrics-grid-4, .dash-summary-row { grid-template-columns: 1fr; }
+}

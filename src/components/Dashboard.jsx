@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { getAqiLevel, getAqiPercentage, formatPollutant, formatDateTime } from '../utils/aqiHelpers';
 import '../styles/dashboard.css';
 
@@ -11,6 +12,8 @@ function AqiGauge({ aqi }) {
   return (
     <div className="gauge-wrap">
       <svg className="gauge-svg" viewBox="0 0 180 180">
+        {/* Outer glow ring */}
+        <circle cx="90" cy="90" r={radius + 8} fill="none" stroke={level.color} strokeWidth="1" opacity="0.15" />
         <circle cx="90" cy="90" r={radius} fill="none" stroke="rgba(141,216,255,0.1)" strokeWidth="12" />
         <circle
           cx="90" cy="90" r={radius}
@@ -21,7 +24,7 @@ function AqiGauge({ aqi }) {
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
           transform="rotate(-90 90 90)"
-          style={{ transition: 'stroke-dashoffset 1s ease, stroke 0.5s ease' }}
+          style={{ transition: 'stroke-dashoffset 1s ease, stroke 0.5s ease', filter: `drop-shadow(0 0 6px ${level.color}88)` }}
         />
         <text x="90" y="82" textAnchor="middle" fill={level.color} fontSize="36" fontWeight="800">{aqi}</text>
         <text x="90" y="104" textAnchor="middle" fill="#8BA8C4" fontSize="12">AQI Index</text>
@@ -41,13 +44,89 @@ function PollutantCard({ label, value, unit, icon }) {
   );
 }
 
-export default function Dashboard({ data, onNewSearch }) {
+function SearchHistoryBar({ history, onRecheck, currentCity }) {
+  if (!history || history.length <= 1) return null;
+  return (
+    <div className="history-bar">
+      <span className="history-label">📜 Recent:</span>
+      <div className="history-chips">
+        {history.map((h) => {
+          const level = getAqiLevel(h.aqi);
+          const isCurrent = h.city.toLowerCase() === currentCity.toLowerCase();
+          return (
+            <button
+              key={h.city}
+              className={`history-chip ${isCurrent ? 'current' : ''}`}
+              onClick={() => !isCurrent && onRecheck(h.city)}
+              style={{ borderColor: isCurrent ? level.border : undefined }}
+              disabled={isCurrent}
+            >
+              <span className="history-chip-dot" style={{ background: level.color }} />
+              {h.city}
+              <span className="history-chip-aqi" style={{ color: level.color }}>{h.aqi}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function generateShareText(data) {
+  const level = getAqiLevel(data.aqi);
+  return `🌬️ AI AirGuard Report — ${data.city}${data.country ? `, ${data.country}` : ''}
+━━━━━━━━━━━━━━━━━━━━━━━━━━
+AQI: ${data.aqi} (${level.label})
+${level.description}
+
+📊 Pollutants:
+  PM2.5 : ${formatPollutant(data.pm25, 'μg/m³')}
+  PM10  : ${formatPollutant(data.pm10, 'μg/m³')}
+  NO₂   : ${formatPollutant(data.no2,  'μg/m³')}
+  O₃    : ${formatPollutant(data.o3,   'μg/m³')}
+  CO    : ${formatPollutant(data.co,   'μg/m³')}
+  SO₂   : ${formatPollutant(data.so2,  'μg/m³')}
+
+⏱ Updated: ${formatDateTime(data.updatedAt)}
+${data.isDemo ? '⚠️ Sample/demo data — not a live measurement' : '✅ Live data from OpenWeatherMap'}
+Powered by AI AirGuard · https://github.com/`;
+}
+
+export default function Dashboard({ data, onNewSearch, onViewCharts, searchHistory, onHistorySearch }) {
+  const [copied, setCopied] = useState(false);
   if (!data) return null;
   const level = getAqiLevel(data.aqi);
+
+  function handleShare() {
+    const text = generateShareText(data);
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2500);
+      });
+    } else {
+      // Fallback: open in a textarea
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    }
+  }
 
   return (
     <section className="section dashboard-section fade-in">
       <div className="container">
+        {/* History bar */}
+        <SearchHistoryBar
+          history={searchHistory}
+          onRecheck={onHistorySearch}
+          currentCity={data.city}
+        />
+
         {/* Header row */}
         <div className="dash-header">
           <div>
@@ -62,6 +141,18 @@ export default function Dashboard({ data, onNewSearch }) {
           <div className="dash-header-right">
             {data.isDemo && (
               <span className="demo-notice">⚠️ Sample Data — Demo Mode</span>
+            )}
+            <button
+              className="btn btn-ghost btn-sm"
+              onClick={handleShare}
+              title="Copy AQI summary to clipboard"
+            >
+              {copied ? '✅ Copied!' : '📋 Share Summary'}
+            </button>
+            {onViewCharts && (
+              <button className="btn btn-ghost btn-sm" onClick={onViewCharts}>
+                📊 View Charts
+              </button>
             )}
             <button className="btn btn-ghost btn-sm" onClick={onNewSearch}>
               🔄 New Search

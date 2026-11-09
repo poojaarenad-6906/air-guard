@@ -1,4 +1,8 @@
-/* Recommendations */
+/* ============================================================
+   AI AirGuard — Health Recommendations
+   ============================================================ */
+
+/* ── Top alert banner ────────────────────────────────────── */
 .alert-banner {
   display: flex;
   align-items: flex-start;
@@ -7,16 +11,17 @@
   margin-bottom: 28px;
   border-radius: 14px;
 }
-.alert-icon { font-size: 2rem; flex-shrink: 0; }
+.alert-icon { font-size: 2rem; flex-shrink: 0; line-height: 1; }
 
+/* ── Recommendation cards grid ───────────────────────────── */
 .rec-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 24px;
 }
-.rec-card {
-  padding: 28px 26px;
-}
+
+.rec-card { padding: 28px 26px; }
+
 .rec-card-header {
   display: flex;
   align-items: center;
@@ -24,10 +29,16 @@
   flex-wrap: wrap;
   padding-bottom: 16px;
   margin-bottom: 18px;
+  border-bottom: 1px solid rgba(141, 216, 255, 0.10);
 }
 .rec-card-header h3 { flex: 1; font-size: 1.05rem; }
-.rec-card-title { margin-bottom: 18px; font-size: 1.05rem; }
+.rec-card-title {
+  margin-bottom: 18px;
+  font-size: 1.05rem;
+  color: #90CAF9;
+}
 
+/* ── Recommendation item list ────────────────────────────── */
 .rec-list {
   list-style: none;
   display: flex;
@@ -35,14 +46,16 @@
   gap: 10px;
   margin-bottom: 18px;
 }
+
 .rec-item {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   font-size: 0.9rem;
-  color: #C9DFF0;
-  line-height: 1.5;
+  color: #D5E5F0;
+  line-height: 1.55;
 }
+
 .rec-dot {
   flex-shrink: 0;
   width: 7px;
@@ -50,42 +63,48 @@
   border-radius: 50%;
   margin-top: 7px;
 }
+
 .rec-disclaimer {
   font-size: 0.78rem;
   color: #8BA8C4;
-  border-top: 1px solid rgba(141,216,255,0.1);
+  border-top: 1px solid rgba(141, 216, 255, 0.10);
   padding-top: 14px;
   line-height: 1.55;
 }
 
-/* Group selector tabs */
+/* ── Population group selector tabs ─────────────────────── */
 .group-tabs {
   display: flex;
   gap: 6px;
   flex-wrap: wrap;
   margin-bottom: 20px;
 }
+
 .group-tab {
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 6px 12px;
+  padding: 6px 13px;
   border-radius: 8px;
-  border: 1px solid rgba(141,216,255,0.18);
+  border: 1px solid rgba(141, 216, 255, 0.18);
   background: transparent;
   color: #8BA8C4;
   font-size: 0.78rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
   font-family: inherit;
 }
-.group-tab:hover { border-color: #8DD8FF; color: #E1EDF5; }
+.group-tab:hover {
+  border-color: rgba(141, 216, 255, 0.38);
+  color: #E1EDF5;
+  background: rgba(141, 216, 255, 0.06);
+}
 .group-tab.active {
-  background: rgba(25,118,210,0.25);
-  border-color: #1976D2;
+  background: rgba(25, 118, 210, 0.22);
+  border-color: rgba(25, 118, 210, 0.50);
   color: #90CAF9;
-  box-shadow: 0 0 10px rgba(25,118,210,0.25);
+  box-shadow: 0 0 12px rgba(25, 118, 210, 0.22);
 }
 
 .group-header {
@@ -95,6 +114,7 @@
   margin-bottom: 18px;
 }
 
+/* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 900px) {
   .rec-grid { grid-template-columns: 1fr; }
 }

@@ -1,6 +1,68 @@
-/* Dashboard */
+/* ============================================================
+   AI AirGuard — Dashboard
+   Main AQI display, pollutant cards & history bar
+   ============================================================ */
+
 .dashboard-section { padding-top: 100px; }
 
+/* ── Search history bar ──────────────────────────────────── */
+.history-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.history-label {
+  font-size: 0.78rem;
+  color: #8BA8C4;
+  white-space: nowrap;
+  font-weight: 600;
+}
+.history-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.history-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 13px;
+  background: rgba(15, 30, 50, 0.80);
+  border: 1px solid rgba(141, 216, 255, 0.14);
+  border-radius: 20px;
+  color: #8BA8C4;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+.history-chip:hover:not(:disabled) {
+  border-color: rgba(141, 216, 255, 0.38);
+  color: #E1EDF5;
+  background: rgba(141, 216, 255, 0.08);
+  box-shadow: 0 0 10px rgba(141, 216, 255, 0.08);
+}
+.history-chip.current {
+  color: #90CAF9;
+  cursor: default;
+  background: rgba(25, 118, 210, 0.14);
+  border-color: rgba(25, 118, 210, 0.30);
+}
+.history-chip-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.history-chip-aqi {
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+/* ── Dashboard header ────────────────────────────────────── */
 .dash-header {
   display: flex;
   align-items: flex-start;
@@ -16,10 +78,19 @@
 }
 .dash-city h2 { margin-bottom: 0; }
 .city-flag { font-size: 1.4rem; }
-.dash-updated { color: #8BA8C4; font-size: 0.82rem; margin-top: 4px; }
-.dash-header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.dash-updated {
+  color: #8BA8C4;
+  font-size: 0.82rem;
+  margin-top: 5px;
+}
+.dash-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 
-/* Main AQI card */
+/* ── Main AQI card ───────────────────────────────────────── */
 .dash-main-card {
   display: flex;
   align-items: center;
@@ -27,25 +98,49 @@
   padding: 36px 40px;
   margin-bottom: 36px;
   flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
 }
+
+/* Radial glow in the top-right corner — colour set inline */
+.dash-main-card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  /* colour is driven by borderColor — use currentColor trick via box-shadow */
+  background: radial-gradient(circle, rgba(141, 216, 255, 0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+
 .dash-main-left { flex: 0 0 auto; }
 .dash-main-right { flex: 1; min-width: 220px; }
 
-/* Gauge */
+/* ── AQI Gauge (SVG) ─────────────────────────────────────── */
 .gauge-wrap { display: flex; flex-direction: column; align-items: center; }
-.gauge-svg { width: 160px; height: 160px; }
+.gauge-svg { width: 168px; height: 168px; }
 .gauge-label {
-  font-size: 1rem;
+  font-size: 1.02rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  margin-top: 6px;
+  margin-top: 8px;
+  text-align: center;
+  /* colour set inline per AQI level */
 }
 
-/* AQI badge & description */
+/* ── AQI badge & description ─────────────────────────────── */
 .dash-aqi-badge { font-size: 0.88rem; margin-bottom: 14px; }
-.dash-aqi-desc { color: #8BA8C4; margin-bottom: 20px; line-height: 1.55; }
+.dash-aqi-desc {
+  color: #C9DFF0;
+  margin-bottom: 22px;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
 
-/* AQI bar */
+/* ── AQI level bar ───────────────────────────────────────── */
 .dash-aqi-bar-wrap {
   display: flex;
   gap: 4px;
@@ -57,29 +152,41 @@
 .aqi-bar-seg {
   flex: 1;
   border-radius: 4px;
-  transition: transform 0.3s, opacity 0.3s;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 .aqi-bar-labels {
   display: flex;
   justify-content: space-between;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: #8BA8C4;
+  letter-spacing: 0.02em;
+  margin-top: 4px;
 }
 
-/* Pollutants */
+/* ── Pollutants section ──────────────────────────────────── */
 .pollutants-title {
   margin-bottom: 18px;
   font-size: 1.1rem;
+  color: #90CAF9;
 }
+
 .pollutant-card {
   padding: 20px 18px;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
-.pollutant-icon { font-size: 1.4rem; }
+.pollutant-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(141, 216, 255, 0.30);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 0 14px rgba(141, 216, 255, 0.08);
+}
 
+.pollutant-icon { font-size: 1.4rem; line-height: 1; }
+
+/* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 640px) {
-  .dash-main-card { flex-direction: column; padding: 24px 20px; gap: 24px; }
-  .gauge-svg { width: 130px; height: 130px; }
+  .dash-main-card  { flex-direction: column; padding: 24px 20px; gap: 24px; }
+  .gauge-svg       { width: 136px; height: 136px; }
 }
